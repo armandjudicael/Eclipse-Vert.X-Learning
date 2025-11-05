@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: vertx-rabbitmq
+    ports:
+      - "5672:5672"    # AMQP port
+      - "15672:15672"  # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vertx-rabbitmq-app
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xmx256m
+      - rabbitmq.host=rabbitmq
+      - rabbitmq.port=5672
+      - rabbitmq.user=guest
+      - rabbitmq.password=guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
