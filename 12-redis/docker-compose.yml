@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: vertx-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  redis-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vertx-redis-app
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xmx256m
+      - redis.host=redis
+      - redis.port=6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped

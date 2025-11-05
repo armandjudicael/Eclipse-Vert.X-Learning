@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: vertx-grpc-app
+    ports:
+      - "50051:50051"
+    environment:
+      JAVA_OPTS: "-Xmx512m"

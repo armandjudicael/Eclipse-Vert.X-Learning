@@ -55,7 +55,8 @@ public class MainVerticle extends AbstractVerticle {
 
         // Example 4: Demonstrating context data
         vertx.getOrCreateContext().put("verticle-id", this.deploymentID());
-        logger.info("Verticle deployment ID: {}", vertx.getOrCreateContext().get("verticle-id"));
+        String deploymentId = (String) vertx.getOrCreateContext().get("verticle-id");
+        logger.info("Verticle deployment ID: {}", deploymentId);
 
         // Complete the start promise
         startPromise.complete();
