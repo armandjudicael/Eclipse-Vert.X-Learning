@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  vertx-basics:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vertx-basics
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    restart: unless-stopped

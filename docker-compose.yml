@@ -1,0 +1,132 @@
+version: '3.8'
+
+# Root Docker Compose - Run all modules together
+# Usage: docker-compose up [service-name]
+# Example: docker-compose up vertx-basics
+
+services:
+  # Module 01: Vert.x Basics
+  vertx-basics:
+    build:
+      context: ./01-vertx-basics
+      dockerfile: Dockerfile
+    container_name: vertx-basics
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    profiles: ["basics", "all"]
+
+  # Module 02: Event Bus
+  event-bus:
+    build:
+      context: ./02-event-bus
+      dockerfile: Dockerfile
+    container_name: vertx-event-bus
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    profiles: ["eventbus", "all"]
+
+  # Module 03: HTTP Server
+  http-server:
+    build:
+      context: ./03-http-server
+      dockerfile: Dockerfile
+    container_name: vertx-http-server
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    profiles: ["http", "all"]
+
+  # Module 04: Async Futures
+  async-futures:
+    build:
+      context: ./04-async-futures
+      dockerfile: Dockerfile
+    container_name: vertx-async-futures
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    profiles: ["async", "all"]
+
+  # Module 05: Database Integration
+  postgres:
+    image: postgres:16-alpine
+    container_name: vertx-postgres
+    environment:
+      POSTGRES_DB: vertxdb
+      POSTGRES_USER: vertxuser
+      POSTGRES_PASSWORD: vertxpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vertxuser -d vertxdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles: ["database", "all"]
+
+  database-app:
+    build:
+      context: ./05-database-integration
+      dockerfile: Dockerfile
+    container_name: vertx-database-app
+    ports:
+      - "8081:8080"
+    environment:
+      - JAVA_OPTS=-Xmx256m
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=vertxdb
+      - DB_USER=vertxuser
+      - DB_PASSWORD=vertxpass
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles: ["database", "all"]
+
+  # Module 06: WebSockets
+  websockets:
+    build:
+      context: ./06-websockets
+      dockerfile: Dockerfile
+    container_name: vertx-websockets
+    ports:
+      - "8082:8080"
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    profiles: ["websockets", "all"]
+
+  # Module 07: Microservices
+  microservices:
+    build:
+      context: ./07-microservices
+      dockerfile: Dockerfile
+    container_name: vertx-microservices
+    ports:
+      - "8083:8080"
+      - "8084:8081"
+      - "8085:8082"
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    profiles: ["microservices", "all"]
+
+volumes:
+  postgres-data:
+
+# Usage Examples:
+# -----------------
+# Run specific module:
+#   docker-compose --profile basics up
+#   docker-compose --profile http up
+#   docker-compose --profile database up
+#
+# Run multiple modules:
+#   docker-compose --profile http --profile websockets up
+#
+# Run all modules (not recommended - resource intensive):
+#   docker-compose --profile all up
+#
+# Stop and remove:
+#   docker-compose down
+#   docker-compose down -v  (also removes volumes)

@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  microservices:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vertx-microservices
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      - "8082:8082"
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    restart: unless-stopped

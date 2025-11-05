@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  event-bus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vertx-event-bus
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    restart: unless-stopped

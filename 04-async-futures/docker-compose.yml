@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  async-futures:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vertx-async-futures
+    environment:
+      - JAVA_OPTS=-Xmx256m
+    restart: unless-stopped
