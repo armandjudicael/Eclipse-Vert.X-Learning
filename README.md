@@ -8,6 +8,10 @@ This repository provides a structured learning path through Vert.x's core concep
 
 ## 📚 Module Overview
 
+> **Status**: Modules 01-08 are complete with full code, tests, and Docker support.
+> **Roadmap**: See [MODULE_ROADMAP.md](./MODULE_ROADMAP.md) for modules 09-35.
+> **Quick Start**: See [QUICKSTART_MODULES.md](./QUICKSTART_MODULES.md) for running instructions.
+
 ### [Module 01: Vert.x Basics and First Verticle](./01-vertx-basics/)
 **Foundation concepts**
 - Understanding Verticles (standard vs worker)
@@ -287,6 +291,38 @@ Created as a comprehensive learning resource for Eclipse Vert.x.
 - Eclipse Vert.x team for the amazing toolkit
 - The reactive programming community
 - All contributors to Vert.x documentation
+
+---
+
+### [Module 08: Authentication and JWT](./08-auth-jwt/)
+**Security and authentication**
+- JWT token-based authentication
+- BCrypt password hashing
+- User registration and login
+- Protected routes with JWT validation
+- Token refresh mechanism
+- Role-based access control (RBAC)
+
+**Key Learning**: Stateless authentication with JWT
+
+---
+
+## 🗺️ Complete Module Roadmap
+
+This repository includes 35+ modules covering:
+
+### ✅ **Completed** (Modules 01-08)
+Foundation, Event Bus, HTTP/REST, Async, Database, WebSockets, Microservices, Auth/JWT
+
+### 📋 **Planned** (Modules 09-35)
+- **Security**: OAuth2, API keys, HTTPS, Security headers
+- **Messaging**: Kafka, RabbitMQ, MQTT
+- **Caching & NoSQL**: Redis, MongoDB, Elasticsearch
+- **Modern APIs**: GraphQL, gRPC, SSE
+- **Observability**: Metrics, Tracing, Logging
+- **Enterprise**: Service Discovery, Config Management, Testing, Clustering
+
+📖 **See [MODULE_ROADMAP.md](./MODULE_ROADMAP.md) for the complete 35-module plan**
 
 ---
 
